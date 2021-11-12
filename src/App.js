@@ -1,24 +1,47 @@
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+
+const useMount = (name) => {
+  useEffect(() => {
+    console.log(`${name} mounting`);
+  }, [name]);
+};
+
+// Running when rendering include mounting.
+const useRendering = (name) => {
+  useEffect(() => {
+    console.log(`${name} rendering`);
+  });
+};
+
+const Foo = () => {
+  useMount('Foo');
+  useRendering('Foo');
+  return <p>Foo</p>;
+};
 
 function App() {
+  const [state, setState] = useState(true);
+
+  const Bar = () => {
+    const name = 'Bar';
+    useMount(name);
+    useRendering(name);
+    return <p>{name}</p>;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Foo></Foo>
+      <Bar/>
+      <button
+        onClick={() => {
+          setState((pre) => !pre);
+        }}
+      >
+        Changing State
+      </button>
+    </>
   );
 }
 
